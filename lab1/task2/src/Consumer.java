@@ -13,8 +13,8 @@ public class Consumer implements Runnable {
 
         for(int i = 0;  i < counter;   i++) {
             System.out.println("Consumer#" + this.id + " is waiting to get the buffer");
-            String message = buffer.take();
-            System.out.println("Consumer#" + this.id + " got the message: " + message);
+            String message = buffer.take(i);
+//            System.out.println("Consumer#" + this.id + " got the message: " + message);
         }
 
     }

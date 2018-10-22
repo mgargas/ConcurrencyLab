@@ -12,6 +12,9 @@ public class Main {
 
             p.start();
             c.start();
+
+            p.join();
+            c.join();
         }
     }
 }
