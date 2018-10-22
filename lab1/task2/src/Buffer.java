@@ -13,7 +13,7 @@ public class Buffer {
             }
         }
         this.message = message;
-        notifyAll();
+        notify();
     }
 
     public synchronized String take() {
@@ -26,7 +26,7 @@ public class Buffer {
         }
         String m = this.message;
         this.message = "";
-        notifyAll();
+        notify();
         return m;
     }
 }
