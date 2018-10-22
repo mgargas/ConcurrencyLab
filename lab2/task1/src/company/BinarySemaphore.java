@@ -8,15 +8,10 @@ public class BinarySemaphore {
     }
 
     public synchronized void v(){
-        while (state){
-            try {
-                wait();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+        if (!state) {
+            state = true;
+            notifyAll();
         }
-        state = true;
-        notifyAll();
     }
 
     public synchronized void p(){
@@ -28,6 +23,6 @@ public class BinarySemaphore {
             }
         }
         state = false;
-        notifyAll();
     }
 }
+  
