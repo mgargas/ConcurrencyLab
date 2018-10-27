@@ -20,19 +20,18 @@ public class PrintersMonitor {
     }
 
     public Printer reservePrinter(int clientID) {
-        lock.lock();
+        this.lock.lock();
         System.out.println("Client# " + clientID + " is reserving the printer");
-        System.out.println(this.availablePrinters.toString());
-        while (this.availablePrinters.isEmpty()) {
-            try {
-                System.out.println("Client# " + clientID + " is waiting for the printer");
-                noAvailablePrinters.await();
-                System.out.println("Client# " + clientID + " is getting the printer#" + this.availablePrinters.peek().getId());
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }finally {
-                lock.unlock();
+        try{
+            while(this.availablePrinters.size() == 0){
+                System.out.println("There's no printers now. Client# " + clientID + " is waiting for the printer");
+                this.noAvailablePrinters.await();
             }
+            System.out.println("Client# " + clientID + " is getting the printer#" + this.availablePrinters.peek().getId());
+        }catch (InterruptedException e){
+            e.printStackTrace();
+        }finally {
+            this.lock.unlock();
         }
         return this.availablePrinters.remove();
     }
