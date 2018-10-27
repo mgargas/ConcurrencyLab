@@ -14,7 +14,6 @@ public class Server {
     final Condition currentlyWaiting = lock.newCondition();
     HashMap<Integer, Lock> pairLocks = new HashMap<>();
     HashMap<Integer, Condition> pairMissingSomeone = new HashMap<>();
-    HashMap<Integer, Condition> pairMissingTable = new HashMap<>();
     private boolean isReserved = false;
     private int guestsAmount;
 
@@ -27,10 +26,8 @@ public class Server {
         for(int i=0; i<guestsAmount/2; i++){
             Lock pair_lock = new ReentrantLock();
             Condition pair_condition = pair_lock.newCondition();
-            Condition pair_condition2 = pair_lock.newCondition();
             pairLocks.put(i, pair_lock);
             pairMissingSomeone.put(i, pair_condition);
-            pairMissingTable.put(i, pair_condition2);
             pairHavingTable[i] = false;
         }
     }
