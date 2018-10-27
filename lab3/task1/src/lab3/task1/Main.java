@@ -5,8 +5,8 @@ import java.util.List;
 
 public class Main {
     public static void main(String[] args){
-        int p = 1;
-        int c = 5;
+        int p = 2;
+        int c = 10;
         List<Printer> printersList = new ArrayList<>();
         for(int i=0; i<p; i++){
             printersList.add(new Printer(i));

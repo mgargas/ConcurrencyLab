@@ -22,6 +22,7 @@ public class PrintersMonitor {
     public Printer reservePrinter(int clientID) {
         lock.lock();
         System.out.println("Client# " + clientID + " is reserving the printer");
+        System.out.println(this.availablePrinters.toString());
         while (this.availablePrinters.isEmpty()) {
             try {
                 System.out.println("Client# " + clientID + " is waiting for the printer");

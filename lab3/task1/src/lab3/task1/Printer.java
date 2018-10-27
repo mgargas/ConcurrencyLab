@@ -10,4 +10,9 @@ public class Printer {
     public int getId() {
         return id;
     }
+
+    @Override
+    public String toString() {
+        return "PRINTER#" + this.id;
+    }
 }

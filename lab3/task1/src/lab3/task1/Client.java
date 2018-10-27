@@ -10,6 +10,11 @@ public class Client extends Thread{
     public void run() {
         Printer printer = this.printersMonitor.reservePrinter(this.id);
         System.out.println("Printing message: " + "Client# " + this.id + "Printer#" + printer.getId());
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         this.printersMonitor.releasePrinter(this.id, printer);
     }
 
