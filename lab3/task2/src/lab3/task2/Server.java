@@ -46,6 +46,7 @@ public class Server {
             pairHavingTable[pairID] = true;
             System.out.println("Guest#" + guestID + " has reserved the table");
             pairMissingTable.get(pairID).signal();
+            pairMissingSomeone.get(pairID).await();
 
         }else {
             pairMissingSomeone.get(pairID).signal();
@@ -53,6 +54,7 @@ public class Server {
                 pairMissingTable.get(pairID).await();
             }
             System.out.println("Guest#" + guestID + " has just found out that Guest#" + anotherGuestID + " has reserved the table.");
+            pairMissingSomeone.get(pairID).signal();
         }
         lock.unlock();
 
