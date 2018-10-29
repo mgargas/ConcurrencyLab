@@ -1,11 +1,36 @@
 package lab3.task2;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import sun.awt.SunHints;
+
+import java.util.*;
 
 public class Main {
     public static void main(String[] args){
+
+        int guestAmount = 4; //must be an even number
+        int pairAmount = guestAmount/2;
+        HashMap<Integer, Guest> guestsMap = new HashMap<>();
+
+        for(int i=0; i < pairAmount; i++){
+            guestsMap.put(i, new Guest(i, i+pairAmount, i));
+            guestsMap.put(i+pairAmount, new Guest(i+pairAmount, i, i));
+        }
+
+
+        Server server = new Server(guestsMap, guestAmount);
+
+        for (Map.Entry<Integer,Guest> es  : guestsMap.entrySet()) {
+            Guest guest = es.getValue();
+            guest.setServer(server);
+            es.setValue(guest);
+        }
+
+        for (Map.Entry<Integer,Guest> es  : guestsMap.entrySet()) {
+            Guest guest = es.getValue();
+            guest.start();
+        }
+
+        /*
         Guest guest0 = new Guest(0, 3, 0);
         Guest guest1 = new Guest(1, 4, 1);
         Guest guest2 = new Guest(2, 5, 2);
