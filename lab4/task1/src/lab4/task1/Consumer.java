@@ -1,19 +1,14 @@
 package lab4.task1;
 
-public class Consumer extends Thread {
-    private int consumerId;
-    private Buffer buffer;
-    Consumer(Buffer buffer, int consumerId){
-        this.consumerId = consumerId;
-        this.buffer = buffer;
+public class Consumer extends Worker {
+
+    Consumer(int consumerId, Buffer buffer, int productsAmount){
+        super(consumerId, buffer, productsAmount);
     }
 
-    public int getConsumerId() {
-        return consumerId;
-    }
 
     @Override
     public void run() {
-        buffer.consume();
+        for(int i=0;i<getProductsAmount(); i++) getBuffer().consume();
     }
 }

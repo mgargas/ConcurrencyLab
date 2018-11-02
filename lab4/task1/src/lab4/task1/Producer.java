@@ -1,19 +1,13 @@
 package lab4.task1;
 
-public class Producer extends Thread {
-    private int producerId = 0;
-    private Buffer buffer;
+public class Producer extends Worker {
 
-    public Producer(Buffer buffer){
-        this.buffer = buffer;
-    }
-
-    public int getProducerId() {
-        return producerId;
+    public Producer(Buffer buffer, int productsAmount){
+        super(0, buffer, productsAmount);
     }
 
     @Override
     public void run() {
-        buffer.produce();
+        for(int i=0;i<getProductsAmount(); i++) getBuffer().produce();
     }
 }
