@@ -1,5 +1,10 @@
 package lab4.task2;
 
+import com.opencsv.CSVWriter;
+
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
@@ -11,10 +16,14 @@ public class Buffer {
     private final Condition notEnoughRoom = lock.newCondition();
     private final Condition notEnoughProducts = lock.newCondition();
 
+
     public Buffer(int size){
         this.size = size;
         this.counter = 0;
     }
+
+
+
 
     public void put(int amount, int producerId){
         lock.lock();
