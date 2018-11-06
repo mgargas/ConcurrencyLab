@@ -13,46 +13,51 @@ public class Main {
 
 
     public static void main(String[] args) throws IOException {
-        int M = 1000;
-        int producerAmount;
-        int consumerAmount;
+        Integer M = 1000;
+        Integer[] bufferSizes = {2*M, 2*M*10, 2*M*100};
+        Integer[] workerAmounts = {10, 100, 1000};
 
-        File file = new File("./results.csv");
+        File file = new File("./results2.csv");
         FileWriter outputFile = new FileWriter(file);
         CSVWriter writer = new CSVWriter(outputFile);
         String[] header = { "bufferSize", "producersAmount", "consumersAmount", "time", "ID" };
         writer.writeNext(header);
 
 
-        for(int size = 2 * M; M<1000000; M*=10) {
-            for(producerAmount = consumerAmount = 10;
-                producerAmount < 10000 && consumerAmount < 10000; producerAmount *= 10, consumerAmount *= 10) {
+        for(Integer size : bufferSizes) {
+            for(Integer workerAmount : workerAmounts) {
+                System.out.println("Creating buffer with size: " + size);
                 Buffer buffer = new Buffer(size);
+
                 List<Producer> producersList = new ArrayList<>();
                 List<Consumer> consumersList = new ArrayList<>();
-                for (int i = 0; i < producerAmount; i++) producersList.add(new Producer(i, buffer));
-                for (int i = 0; i < consumerAmount; i++) consumersList.add(new Consumer(i, buffer));
+
+                for (int i = 0; i < workerAmount; i++) producersList.add(new Producer(i, buffer));
+                for (int i = 0; i < workerAmount; i++) consumersList.add(new Consumer(i, buffer));
+
                 for (Consumer consumer : consumersList) consumer.start();
                 for (Producer producer : producersList) producer.start();
+
                 try {
                     for (Consumer consumer : consumersList) consumer.join();
                     for (Producer producer : producersList) producer.join();
                 }catch (InterruptedException ie){
                     ie.printStackTrace();
                 }
+                System.out.println("Writing to file. Size: " + size + " WorkersAmount: " + workerAmount);
                 for(Consumer consumer : consumersList){
                     String[] data = consumer.getData();
-                    String[] csvRecord = {String.valueOf(size), String.valueOf(producerAmount),
-                            String.valueOf(consumerAmount), data[0], data[1]};
-                    writer.writeNext(csvRecord);
-                }
-                for(Producer producer : producersList){
-                    String[] data = producer.getData();
-                    String[] csvRecord = {String.valueOf(size), String.valueOf(producerAmount),
-                            String.valueOf(consumerAmount), data[0], data[1]};
+                    String[] csvRecord = {String.valueOf(size), String.valueOf(workerAmount),
+                            String.valueOf(workerAmount), data[0], data[1]};
                     writer.writeNext(csvRecord);
                 }
 
+                for(Producer producer : producersList){
+                    String[] data = producer.getData();
+                    String[] csvRecord = {String.valueOf(size), String.valueOf(workerAmount),
+                            String.valueOf(workerAmount), data[0], data[1]};
+                    writer.writeNext(csvRecord);
+                }
             }
         }
         writer.close();

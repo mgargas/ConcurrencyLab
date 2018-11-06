@@ -10,8 +10,8 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 public class Buffer {
-    private int size;
-    private int counter;
+    private Integer size;
+    private Integer counter;
     private final Lock lock = new ReentrantLock();
     private final Condition notEnoughRoom = lock.newCondition();
     private final Condition notEnoughProducts = lock.newCondition();
@@ -21,8 +21,6 @@ public class Buffer {
         this.size = size;
         this.counter = 0;
     }
-
-
 
 
     public void put(int amount, int producerId){
@@ -39,8 +37,9 @@ public class Buffer {
             e.printStackTrace();
         }
         counter += amount;
-        System.out.println("Producer#" + producerId + " put " + amount);
+        System.out.println("Producer#" + producerId + " put " + amount + ". Counter: " + counter);
         notEnoughProducts.signal();
+        notEnoughRoom.signal();
         System.out.println("Producer#" + producerId + " released the buffer");
         lock.unlock();
     }
@@ -58,8 +57,9 @@ public class Buffer {
             e.printStackTrace();
         }
         counter -= amount;
-        System.out.println("Consumer#" + consumerId + " took " + amount);
+        System.out.println("Consumer#" + consumerId + " took " + amount + ". Counter: " + counter);
         notEnoughRoom.signal();
+        notEnoughProducts.signal();
         System.out.println("Consumer#" + consumerId + " released the buffer");
         lock.unlock();
     }

@@ -16,7 +16,8 @@ public class Producer extends Thread{
     @Override
     public void run() {
         Long startTime = System.nanoTime();
-        buffer.put(random.nextInt((buffer.getSize()/2)), producerId);
+        buffer.put(producerId%(buffer.getSize()/2), producerId);
+        //buffer.put(random.nextInt((buffer.getSize()/2)+1), producerId);
         Long time = System.nanoTime() - startTime;
         this.data = new String[]{String.valueOf(time), "P#"+String.valueOf(producerId)};
     }

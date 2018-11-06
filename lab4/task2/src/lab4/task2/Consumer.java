@@ -17,7 +17,8 @@ public class Consumer extends Thread{
     @Override
     public void run() {
         Long startTime = System.nanoTime();
-        buffer.take(random.nextInt((buffer.getSize()/2)), consumerId);
+        buffer.take(consumerId%(buffer.getSize()/2), consumerId);
+        //buffer.take(random.nextInt((buffer.getSize()/2)+1), consumerId);
         Long time = System.nanoTime() - startTime;
         this.data = new String[]{String.valueOf(time), "C#"+String.valueOf(consumerId)};
     }
