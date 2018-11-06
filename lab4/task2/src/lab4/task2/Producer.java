@@ -1,18 +1,17 @@
 package lab4.task2;
 
-import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
 public class Producer extends Thread{
     private int producerId;
-    private Buffer buffer;
+    private IBuffer buffer;
     private Random random = new Random();
     private String[] data;
     List<Long> measurementsList = new ArrayList<>();
 
-    public Producer(int producerId, Buffer buffer){
+    public Producer(int producerId, IBuffer buffer){
         this.producerId = producerId;
         this.buffer = buffer;
     }

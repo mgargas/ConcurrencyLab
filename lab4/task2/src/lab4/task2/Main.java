@@ -16,7 +16,7 @@ public class Main {
         Integer[] bufferSizes = {2*M, 2*M*10, 2*M*100};
         Integer[] workerAmounts = {10, 100, 1000};
 
-        File file = new File("./naive_results.csv");
+        File file = new File("./fair_results.csv");
         FileWriter outputFile = new FileWriter(file);
         CSVWriter writer = new CSVWriter(outputFile);
         String[] header = { "bufferSize", "producersAmount", "consumersAmount", "time", "ID" };
@@ -26,8 +26,8 @@ public class Main {
         for(Integer size : bufferSizes) {
             for(Integer workerAmount : workerAmounts) {
                 System.out.println("Creating buffer with size: " + size);
-                Buffer buffer = new Buffer(size);
-
+                //IBuffer buffer = new NaiveBuffer(size);
+                IBuffer buffer = new FairBuffer(size);
                 List<Producer> producersList = new ArrayList<>();
                 List<Consumer> consumersList = new ArrayList<>();
 

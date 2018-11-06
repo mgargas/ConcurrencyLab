@@ -4,12 +4,12 @@ import java.util.Random;
 
 public class Consumer extends Thread{
     private int consumerId;
-    private Buffer buffer;
+    private IBuffer buffer;
     private Random random = new Random();
     private String[] data;
 
 
-    public Consumer(int consumerId, Buffer buffer){
+    public Consumer(int consumerId, IBuffer buffer){
         this.consumerId = consumerId;
         this.buffer = buffer;
     }

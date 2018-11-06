@@ -5,7 +5,7 @@ import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
-public class Buffer {
+public class NaiveBuffer implements IBuffer {
     private Integer size;
     private Integer counter;
     private final Lock lock = new ReentrantLock();
@@ -13,7 +13,7 @@ public class Buffer {
     private final Condition notEnoughProducts = lock.newCondition();
 
 
-    public Buffer(int size){
+    public NaiveBuffer(int size){
         this.size = size;
         this.counter = 0;
     }
@@ -35,10 +35,10 @@ public class Buffer {
         counter += amount;
         System.out.println("Producer#" + producerId + " put " + amount + ". Counter: " + counter);
         notEnoughProducts.signal();
-       // notEnoughRoom.signal();
         System.out.println("Producer#" + producerId + " released the buffer");
         lock.unlock();
     }
+
 
     public void take(int amount, int consumerId){
         lock.lock();
@@ -55,10 +55,10 @@ public class Buffer {
         counter -= amount;
         System.out.println("Consumer#" + consumerId + " took " + amount + ". Counter: " + counter);
         notEnoughRoom.signal();
-       // notEnoughProducts.signal();
         System.out.println("Consumer#" + consumerId + " released the buffer");
         lock.unlock();
     }
+
 
     public int getSize() {
         return size;
