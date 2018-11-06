@@ -1,7 +1,6 @@
 package lab4.task2;
 
 import com.opencsv.CSVWriter;
-import lab3.task1.Printer;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -17,7 +16,7 @@ public class Main {
         Integer[] bufferSizes = {2*M, 2*M*10, 2*M*100};
         Integer[] workerAmounts = {10, 100, 1000};
 
-        File file = new File("./results2.csv");
+        File file = new File("./naive_results.csv");
         FileWriter outputFile = new FileWriter(file);
         CSVWriter writer = new CSVWriter(outputFile);
         String[] header = { "bufferSize", "producersAmount", "consumersAmount", "time", "ID" };

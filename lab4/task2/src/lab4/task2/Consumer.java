@@ -16,11 +16,13 @@ public class Consumer extends Thread{
 
     @Override
     public void run() {
-        Long startTime = System.nanoTime();
-        buffer.take(consumerId%(buffer.getSize()/2), consumerId);
-        //buffer.take(random.nextInt((buffer.getSize()/2)+1), consumerId);
-        Long time = System.nanoTime() - startTime;
-        this.data = new String[]{String.valueOf(time), "C#"+String.valueOf(consumerId)};
+        for(int i=0;i<100;i++) {
+            Long startTime = System.nanoTime();
+            buffer.take((consumerId % (buffer.getSize() / 2)) + 1, consumerId);
+            //buffer.take(random.nextInt(buffer.getSize()/2)+1, consumerId);
+            Long time = System.nanoTime() - startTime;
+            this.data = new String[]{String.valueOf(time), "PUT"};
+        }
     }
 
     public String[] getData() {

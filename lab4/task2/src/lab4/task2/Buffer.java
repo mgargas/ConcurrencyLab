@@ -1,10 +1,6 @@
 package lab4.task2;
 
-import com.opencsv.CSVWriter;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
@@ -39,7 +35,7 @@ public class Buffer {
         counter += amount;
         System.out.println("Producer#" + producerId + " put " + amount + ". Counter: " + counter);
         notEnoughProducts.signal();
-        notEnoughRoom.signal();
+       // notEnoughRoom.signal();
         System.out.println("Producer#" + producerId + " released the buffer");
         lock.unlock();
     }
@@ -59,7 +55,7 @@ public class Buffer {
         counter -= amount;
         System.out.println("Consumer#" + consumerId + " took " + amount + ". Counter: " + counter);
         notEnoughRoom.signal();
-        notEnoughProducts.signal();
+       // notEnoughProducts.signal();
         System.out.println("Consumer#" + consumerId + " released the buffer");
         lock.unlock();
     }
