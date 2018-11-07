@@ -36,11 +36,13 @@ public class Buffer {
                 System.out.println("Producer is waiting for the consumer");
                 noElementsReady[processorsAmount+1].await();
             }
+            bufferLock.unlock();
             System.out.println("Producer is working");
             userJobCounter[processorsAmount+1]--;
             buffer[userPointer[0]] = 0;
             userPointer[0] = (userPointer[0] + 1) % buffer.length;
             userJobCounter[0]++;
+            bufferLock.lock();
             noElementsReady[0].signal(); // notify the first processor
         } catch (InterruptedException e){
             e.printStackTrace();
@@ -60,12 +62,14 @@ public class Buffer {
                 System.out.println("Processor#" + processorId + " is waiting for Processor#" + (processorId-1));
                 noElementsReady[processorId - 1].await();
             }
+            bufferLock.unlock();
             System.out.println("Processor#" + processorId + " is working.");
             Thread.sleep((long)(Math.random() * 1000));
             userJobCounter[processorId - 1]--;
             buffer[userPointer[processorId]]++;
             userPointer[processorId] = (userPointer[processorId] + 1) % buffer.length;
             userJobCounter[processorId]++;
+            bufferLock.lock();
             noElementsReady[processorId].signal(); // notify the next processor
         } catch (InterruptedException e){
             e.printStackTrace();
@@ -85,11 +89,13 @@ public class Buffer {
                 System.out.println("Consumer is waiting for the producer");
                 noElementsReady[processorsAmount].await();
             }
+            bufferLock.unlock();
             System.out.println("Consumer is working.");
             userJobCounter[processorsAmount]--;
             buffer[userPointer[processorsAmount+1]] = -1; //consume
             userPointer[processorsAmount+1] = (userPointer[processorsAmount+1] + 1) % buffer.length;
             userJobCounter[processorsAmount+1]++;
+            bufferLock.lock();
             noElementsReady[processorsAmount+1].signal(); //notify the producer
         }catch (InterruptedException e){
             e.printStackTrace();
