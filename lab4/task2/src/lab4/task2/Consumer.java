@@ -1,5 +1,7 @@
 package lab4.task2;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 public class Consumer extends Thread{
@@ -7,6 +9,7 @@ public class Consumer extends Thread{
     private IBuffer buffer;
     private Random random = new Random();
     private String[] data;
+    List<Long> measurementsList = new ArrayList<>();
 
 
     public Consumer(int consumerId, IBuffer buffer){
@@ -16,13 +19,16 @@ public class Consumer extends Thread{
 
     @Override
     public void run() {
+        int portion = consumerId % (buffer.getSize() / 2) + 1;
         for(int i=0;i<100;i++) {
             Long startTime = System.nanoTime();
-            buffer.take((consumerId % (buffer.getSize() / 2)) + 1, consumerId);
+            buffer.take(portion, consumerId);
             //buffer.take(random.nextInt(buffer.getSize()/2)+1, consumerId);
             Long time = System.nanoTime() - startTime;
-            this.data = new String[]{String.valueOf(time), "PUT"};
+            measurementsList.add(time);
         }
+        double average = measurementsList.stream().mapToLong(a -> a).average().getAsDouble();
+        this.data = new String[]{String.valueOf(portion), String.valueOf(average), "PUT"};
     }
 
     public String[] getData() {

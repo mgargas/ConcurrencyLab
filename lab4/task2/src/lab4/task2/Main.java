@@ -19,7 +19,7 @@ public class Main {
         File file = new File("./fair_results.csv");
         FileWriter outputFile = new FileWriter(file);
         CSVWriter writer = new CSVWriter(outputFile);
-        String[] header = { "bufferSize", "producersAmount", "consumersAmount", "time", "ID" };
+        String[] header = { "bufferSize","portion", "producersAmount", "consumersAmount", "time", "ID" };
         writer.writeNext(header);
 
 
@@ -46,15 +46,15 @@ public class Main {
                 System.out.println("Writing to file. Size: " + size + " WorkersAmount: " + workerAmount);
                 for(Consumer consumer : consumersList){
                     String[] data = consumer.getData();
-                    String[] csvRecord = {String.valueOf(size), String.valueOf(workerAmount),
-                            String.valueOf(workerAmount), data[0], data[1]};
+                    String[] csvRecord = {String.valueOf(size),data[0], String.valueOf(workerAmount),
+                            String.valueOf(workerAmount), data[1], data[2]};
                     writer.writeNext(csvRecord);
                 }
 
                 for(Producer producer : producersList){
                     String[] data = producer.getData();
-                    String[] csvRecord = {String.valueOf(size), String.valueOf(workerAmount),
-                            String.valueOf(workerAmount), data[0], data[1]};
+                    String[] csvRecord = {String.valueOf(size),data[0], String.valueOf(workerAmount),
+                            String.valueOf(workerAmount), data[1], data[2]};
                     writer.writeNext(csvRecord);
                 }
             }

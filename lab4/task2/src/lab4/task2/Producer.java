@@ -18,15 +18,16 @@ public class Producer extends Thread{
 
     @Override
     public void run() {
+        int portion = producerId % (buffer.getSize() / 2) + 1;
         for(int i=0;i<100;i++) {
             Long startTime = System.nanoTime();
-            buffer.put((producerId % (buffer.getSize() / 2)) + 1, producerId);
+            buffer.put(portion, producerId);
             //buffer.put(random.nextInt(buffer.getSize()/2)+1, producerId);
             Long time = System.nanoTime() - startTime;
             measurementsList.add(time);
         }
         double average = measurementsList.stream().mapToLong(a -> a).average().getAsDouble();
-        this.data = new String[]{String.valueOf(average), "TAKE"};
+        this.data = new String[]{String.valueOf(portion), String.valueOf(average), "TAKE"};
     }
 
     public String[] getData() {
