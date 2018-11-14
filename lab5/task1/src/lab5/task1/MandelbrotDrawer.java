@@ -2,7 +2,7 @@ package lab5.task1;
 
 import java.util.concurrent.Callable;
 
-public class MandelbrotDrawer implements Callable<Long>{
+public class MandelbrotDrawer implements Callable<Boolean>{
     private Mandelbrot mandelbrot;
     private int x1;
     private int x2;
@@ -18,9 +18,8 @@ public class MandelbrotDrawer implements Callable<Long>{
     }
 
     @Override
-    public Long call() {
+    public Boolean call() {
         double zx, zy, cX, cY, tmp;
-        Long startTime = System.nanoTime();
         for (int y1 = 0; y1 < y2; y1++) {
             for (int x1 = 0; x1 < x2; x1++) {
                 zx = zy = 0;
@@ -36,7 +35,6 @@ public class MandelbrotDrawer implements Callable<Long>{
                 mandelbrot.getI().setRGB(x1, y1, iter | (iter << 8));
             }
         }
-        Long endTime = System.nanoTime();
-        return endTime - startTime;
+        return true;
     }
 }

@@ -77,6 +77,7 @@ public class Mandelbrot extends JFrame{
                 int dx = mandelbrot.getWidth()/tasks;
                 int dy = mandelbrot.getHeight()/tasks;
                 for(int i=0; i<10; i++) {
+                    Long startTime = System.nanoTime();
                     int x = 0;
                     int y = 0;
                     for (int j = 0; j < tasks; j++) {
@@ -86,12 +87,11 @@ public class Mandelbrot extends JFrame{
                         y += dy;
                         futureList.add(future);
                     }
-                    List<Long> tasksTimeList = new ArrayList<>();
                     for (Future future : futureList) {
-                        tasksTimeList.add((Long) future.get());
+                        future.get();
                     }
-                    Long time = tasksTimeList.stream().mapToLong(a -> a).sum();
-                    String[] csvRecord = {String.valueOf(threads), String.valueOf(tasks), String.valueOf(time)};
+                    Long endTime = System.nanoTime();
+                    String[] csvRecord = {String.valueOf(threads), String.valueOf(tasks), String.valueOf(endTime - startTime)};
                     writer.writeNext(csvRecord);
                 }
             }
